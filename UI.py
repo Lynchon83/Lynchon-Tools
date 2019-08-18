@@ -68,6 +68,8 @@ class UI_PT_LynchonPanel(bpy.types.Panel):
         row = layout.row()
         row.operator("curve.fillet") 
 
+        row = layout.row()
+        row.operator("object.stair_maker") 
         
         # split = layout.split()
         # # First column
