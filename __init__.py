@@ -15,7 +15,7 @@ bl_info = {
     "name" : "Lynchon Tools 2.80",
     "author" : "Lynchon",
     "description" : "",
-    "version" : (1,2,0), 
+    "version" : (1,2,1), 
     "blender" : (2, 81, 0),
     "location" : "",
     "warning" : "",
