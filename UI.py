@@ -121,9 +121,15 @@ class UI_PT_LynchonMMCPanel(bpy.types.Panel):
         # Second column, aligned
         col = split.column(align=True)
         col.prop(mytool, "conform_threshold")
-        # root for export
+        
+        # root for export      
         col = layout.column(align=True)
-        col.prop(mytool, "path", text="")
+        col.prop(mytool, "path", text = "output path")
+
+        # Big render button
+        row = layout.row()
+        row.scale_y = 2.0
+        row.operator("render.render", text ="write XML")
  
 class UI_PT_LynchoToolsPreferences(bpy.types.AddonPreferences):
     bl_idname = __package__
