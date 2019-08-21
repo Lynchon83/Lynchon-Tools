@@ -54,15 +54,14 @@ class UI_PT_LynchonPanel(bpy.types.Panel):
         row.operator("uv.tube_uv_unwrap") 
 
         split = layout.split()
-
-       
-        # First column
         col = split.column()
+        # First column        
         col.operator("mesh.hidesato_offset_edges", text='Offset').geometry_mode='offset' 
         col = split.column(align=True)
         # Second column
         col.operator("mesh.hidesato_offset_edges", text='Offset Extrude').geometry_mode='extrude' 
         col = split.column(align=True)
+        # Third column
         col.operator("mesh.hidesato_offset_edges_profile", text='Offset with Profile') 
 
         row = layout.row()
@@ -70,6 +69,9 @@ class UI_PT_LynchonPanel(bpy.types.Panel):
 
         row = layout.row()
         row.operator("object.stair_maker") 
+
+        row = layout.row()
+        row.operator("mesh.optiloops")
         
         # split = layout.split()
         # # First column

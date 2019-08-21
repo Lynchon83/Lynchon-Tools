@@ -15,7 +15,7 @@ bl_info = {
     "name" : "Lynchon Tools 2.80",
     "author" : "Lynchon",
     "description" : "",
-    "version" : (1,1,0), 
+    "version" : (1,2,0), 
     "blender" : (2, 81, 0),
     "location" : "",
     "warning" : "",
@@ -27,7 +27,7 @@ import sys
 import importlib
 from . import addon_updater_ops
 #'Hidesato Offset Edges'
-modulesNames = ['UI','y_up','xml_parse_particles', 'xml_parse_conformHeight', 'metal_compiler','edit_pivot','uv_tube_unwrap','Hidesato Offset Edges','fillet_280','StairMaker',]
+modulesNames = ['UI','y_up','xml_parse_particles', 'xml_parse_conformHeight', 'metal_compiler','edit_pivot','uv_tube_unwrap','Hidesato Offset Edges','fillet_280','StairMaker','optiloops',]
 
 
  
