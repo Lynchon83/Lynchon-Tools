@@ -85,14 +85,26 @@ def createLowPolyVenue(tree, filename):
                 #Create vertex group and assign vertices to vertex group
 
                 dl = bm.verts.layers.deform.verify()
+                seatID = str(Seat.get('name'))
+
+                
                 for v in f1.verts:
                     if sector.vertex_groups.get(seat_type) is None:
                         group = sector.vertex_groups.new(name=seat_type)
-                        v[dl][group.index] = 1.0
+                        v[dl][group.index] = 1.0    
 
                     else:
                         group = sector.vertex_groups.find(seat_type)
                         v[dl][group] = 1.0
+                        
+                    
+                    if sector.vertex_groups.get(seatID) is None:
+                        group_seatID = sector.vertex_groups.new(name = seatID)
+                        v[dl][group_seatID.index] = 1.0
+                    
+                    else:
+                        group_seatID = sector.vertex_groups.find(seatID)
+                        v[dl][group_seatID] = 1.0
 
             bm.to_mesh(mesh)
             bm.free()
@@ -102,39 +114,41 @@ def createLowPolyVenue(tree, filename):
             for vg in range(len(sector.vertex_groups)):
 
 
-               #Create particle system
-
-                sector.modifiers.new(name=seat_type, type = 'PARTICLE_SYSTEM')
-
-                part = sector.particle_systems[vg]
-
-                part.settings.emit_from = 'FACE'
-                part.settings.userjit = 1
-                part.settings.physics_type = 'NO'
-                part.settings.frame_start = 1.0
-                part.settings.frame_end = 1.0
-                part.settings.render_type = 'OBJECT'
-                part.settings.particle_size = 1
-                part.settings.use_emit_random = False
-
-                #Count number of vertices in each vertex group
-                o = bpy.context.object
-                vs = [v for v in o.data.vertices if vg in [vg.group for vg in v.groups]]
-                part.settings.count = len(vs) / 3 
-
-                part.settings.use_rotations = True
-                part.settings.rotation_mode = 'VEL'
-                part.settings.phase_factor = 0
-                part.settings.use_even_distribution = False
-
-                #Assign vertex group(seat type) to particle system
                 bpy.context.view_layer.objects.active = sector
                 sector_name = bpy.context.active_object.name
                 vg_name =bpy.data.objects[sector_name].vertex_groups[vg].name
-                part.vertex_group_density = vg_name
-                #Assign seat model to particle system
-                part.settings.instance_object = bpy.data.collections['seats_lp'].objects[vg_name]
 
+                if "SEAT" in vg_name:           
+
+                    #Create particle system
+
+                    sector.modifiers.new(name=seat_type, type = 'PARTICLE_SYSTEM')
+
+                    part = sector.particle_systems[vg]
+
+                    part.settings.emit_from = 'FACE'
+                    part.settings.userjit = 1
+                    part.settings.physics_type = 'NO'
+                    part.settings.frame_start = 1.0
+                    part.settings.frame_end = 1.0
+                    part.settings.render_type = 'OBJECT'
+                    part.settings.particle_size = 1
+                    part.settings.use_emit_random = False
+
+                    #Count number of vertices in each vertex group
+                    o = bpy.context.object
+                    vs = [v for v in o.data.vertices if vg in [vg.group for vg in v.groups]]
+                    part.settings.count = len(vs) / 3 
+
+                    part.settings.use_rotations = True
+                    part.settings.rotation_mode = 'VEL'
+                    part.settings.phase_factor = 0
+                    part.settings.use_even_distribution = False
+
+                    #Assign vertex group(seat type) to particle system
+                    part.vertex_group_density = vg_name
+                    #Assign seat model to particle system
+                    part.settings.instance_object = bpy.data.collections['seats_lp'].objects[vg_name]
 
 selection = []           
 
