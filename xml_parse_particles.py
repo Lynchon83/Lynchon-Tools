@@ -157,22 +157,19 @@ def getChildren():
     # x = bpy.ops.object.select_grouped(type='COLLECTION')
     x = bpy.context.collection
 
-    print (x.objects)
+    # print (x.objects)
     
     sel_obj = bpy.context.selected_objects
     
     for obj in x.objects:
         selection.append(obj)
+    
 
-    print(selection, sep="\n")
+    # print(selection, sep="\n")
     return sel_obj
 
-def convert_to_mesh():
-    
-    
-    
-    # bpy.ops.object.select_all(action='TOGGLE')
-
+def convert_to_mesh():        
+        # bpy.ops.object.select_all(action='TOGGLE')
     for ob in selection:
         ob.select_set(state=True)
         bpy.ops.object.duplicates_make_real(use_base_parent=True, use_hierarchy=False)
@@ -186,7 +183,50 @@ def convert_to_mesh():
         ob.select_set(state=False)
     del selection[:]
 
+def writexml():
+    
+    getChildren()
+    print (selection)
+    for obj in selection:
+         # Get the active mesh
+        print (selection , "selection   ")
+        print (obj.name, "sector")
+        obj.select_set(state=True)
+        bpy.context.view_layer.objects.active
+        
+        bpy.ops.object.mode_set(mode = 'EDIT')
+        me = obj.data
+        print (me)
+        bm = bmesh.from_edit_mesh(me)
 
+        for f in bm.faces:
+            print (f.calc_center_median() , "face")
+            
+            layer_deform = bm.verts.layers.deform.active
+            assert layer_deform is not None
+
+            bmv = f.verts[0]
+            
+            names = tuple(vertex_group.name for vertex_group in obj.vertex_groups)
+
+            for vertex_group_index, weight in bmv[layer_deform].items():
+                name = names[vertex_group_index]
+                print("Name: %s, Weight: %f" % (name, weight))
+                      
+        bm.free()
+        obj.select_set(state=False)
+        bpy.ops.object.mode_set(mode = 'OBJECT')
+
+        
+        
+        
+        
+        
+        
+        
+
+   
+        
 
 class XML_OT_lowPolyGeneratorParticles(Operator, ImportHelper):
     bl_idname = "xml.lowpolygeneratorparticles"
@@ -219,6 +259,7 @@ class XML_OT_lowPolyGeneratorParticles(Operator, ImportHelper):
         print('Some Boolean:', self.some_boolean)
 
         return {'FINISHED'}
+
 class XML_OT_conformLpVenue(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "xml.conform_lp_venue"
@@ -229,7 +270,24 @@ class XML_OT_conformLpVenue(bpy.types.Operator):
         convert_to_mesh()
         return {'FINISHED'}
 
-classes = (XML_OT_lowPolyGeneratorParticles, XML_OT_conformLpVenue,)
+class XML_OT_writexml(bpy.types.Operator, ImportHelper):
+    """Tooltip"""
+    bl_idname = "xml.write_xml"
+    bl_label = "Write XML"
+
+    def execute(self, context):
+        
+        """Do something with the selected file(s)."""
+
+        file_root, extension = os.path.splitext(self.filepath)
+        print(self.filepath)
+        writexml()
+        
+        return {'FINISHED'}
+
+
+
+classes = (XML_OT_lowPolyGeneratorParticles, XML_OT_conformLpVenue, XML_OT_writexml,)
 
 register, unregister = bpy.utils.register_classes_factory(classes)
  

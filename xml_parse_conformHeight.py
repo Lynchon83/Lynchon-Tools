@@ -59,7 +59,7 @@ def conformHeight(tree):
                 new_height = (loc[2])
                 new_height_f = '{:.3f}'.format(new_height)  
                 
-                print(new_height_f)
+                
                 Seat.set('py', new_height_f)
 
 

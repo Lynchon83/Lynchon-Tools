@@ -129,7 +129,7 @@ class UI_PT_LynchonMMCPanel(bpy.types.Panel):
         # Big render button
         row = layout.row()
         row.scale_y = 2.0
-        row.operator("render.render", text ="write XML")
+        row.operator("xml.write_xml", text ="write XML")
  
 class UI_PT_LynchoToolsPreferences(bpy.types.AddonPreferences):
     bl_idname = __package__
